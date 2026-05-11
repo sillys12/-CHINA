@@ -1,0 +1,52 @@
+server:
+  # 8080 常被占用；默认用 8081，可用环境变量覆盖
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: pattern-user-backend
+  servlet:
+    multipart:
+      # 允许上传较大的图片（可按需再调）
+      max-file-size: 15MB
+      max-request-size: 30MB
+  datasource:
+    # 你可以用环境变量覆盖它们：
+    # SPRING_DATASOURCE_URL / SPRING_DATASOURCE_USERNAME / SPRING_DATASOURCE_PASSWORD
+    # 说明：MySQL 会区分 root@localhost 与 root@127.0.0.1；若你能用 127.0.0.1 连通，建议默认也用它
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://127.0.0.1:3306/pattern_user?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    # 注意：YAML 中 `#` 会被当成注释起始符；用双引号包住整个占位符，确保默认值不被截断、也不会把引号当成密码的一部分
+    password: "${SPRING_DATASOURCE_PASSWORD:djh468#FQ}"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+
+app:
+  cors:
+    # 这里用 YAML 列表，避免逗号字符串被当成“一个 origin”
+    allowed-origins:
+      # 开发阶段允许任意端口（例如 vite dev:5173/5174、preview:4173 等）
+      - http://127.0.0.1:*
+      - http://localhost:*
+
+  qiniu:
+    access-key: ${QINIU_ACCESS_KEY:}
+    secret-key: ${QINIU_SECRET_KEY:}
+    bucket: ${QINIU_BUCKET:patternsquarepicture}
+    # 注意：部分 hd-bkt 域名用 https 可能出现证书不匹配（浏览器报 ERR_CERT_COMMON_NAME_INVALID）
+    # 开发阶段建议用 http；生产再换成你自己的 https 自定义域名（配好证书）
+    # 这里必须填写你空间“域名管理”里的 CDN 测试域名/自定义加速域名，否则会 404 看不到图片
+    domain: ${QINIU_DOMAIN:http://te52zw20w.hd-bkt.clouddn.com}
+
+  jwt:
+    # 强烈建议通过环境变量覆盖（不要写死到仓库）
+    secret: ${APP_JWT_SECRET:${JWT_SECRET:}}
+    # 默认 7 天
+    ttl-seconds: ${APP_JWT_TTL_SECONDS:604800}
+

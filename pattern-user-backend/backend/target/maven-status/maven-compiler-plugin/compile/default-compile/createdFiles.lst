@@ -1,0 +1,12 @@
+com\wenzhi\backend\user\UserEntity.class
+com\wenzhi\backend\PatternUserBackendApplication.class
+com\wenzhi\backend\user\UserRepository.class
+com\wenzhi\backend\auth\AuthController.class
+com\wenzhi\backend\auth\dto\LoginRequest.class
+com\wenzhi\backend\config\CorsProperties.class
+com\wenzhi\backend\config\SecurityConfig.class
+com\wenzhi\backend\auth\dto\AuthOkResponse.class
+com\wenzhi\backend\config\CorsConfig.class
+com\wenzhi\backend\auth\dto\CheckUsernameResponse.class
+com\wenzhi\backend\auth\dto\RegisterRequest.class
+com\wenzhi\backend\auth\AuthService.class
